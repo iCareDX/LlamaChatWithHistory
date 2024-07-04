@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import { Chat } from "./chatWanco.js";
 import { saveHistory } from './saveHistory.js';
 
-const HOST = process.env.DORA_ENGINE_HOST || "192.168.11.37";
+const HOST = process.env.DORA_ENGINE_HOST || "localhost";
 const PORT = process.env.DORA_ENGINE_PORT || "3090";
 
 const socket = io.connect(`ws://${HOST}:${PORT}/chat`, {
@@ -50,7 +50,7 @@ const handleAsk = (payload, callback) => {
     entry.role === "user"
       ? index === 0 ? `${entry.text} [/INST]` : `</s><s>[INST] ${entry.text} [/INST]`
       : ` ${entry.text} `
-  ).join("");
+  ).join("")+'\n';
 
   chat.on("end", () => {
     messages.push({ text: endmark });
