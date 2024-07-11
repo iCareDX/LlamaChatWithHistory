@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { Chat } from "./chatWanco.js";
+import { Chat } from "./chatWanco_llama3.js";
 import { saveHistory } from './saveHistory.js';
 
 const HOST = process.env.DORA_ENGINE_HOST || "localhost";
@@ -11,7 +11,7 @@ const socket = io.connect(`ws://${HOST}:${PORT}/chat`, {
   rejectUnauthorized: false
 });
 
-const chat = new Chat({ scriptpath: "./scripts/elyza-chat.sh" });
+const chat = new Chat({ scriptpath: "./scripts/elyza-chat-llama3.sh" });
 const endmark = "[end]";
 const messages = [];
 let state = "idle";
@@ -58,9 +58,9 @@ const handleAsk = async (payload, callback) => {
 
   const context = history.map((entry, index) => {
     if (entry.role === "user") {
-      return index === 0 ? `${entry.text} [/INST]` : `</s><s>[INST] ${entry.text} [/INST]`;
+      return index === 0 ? `<|start_header_id|> user <|end_header_id|> ${entry.text} <|eot_id|> ` : `<|start_header_id|> user <|end_header_id|> ${entry.text} <|eot_id|> `;
     } else {
-      return ` ${entry.text} `;
+      return `<|start_header_id|> assistant <|end_header_id|> ${entry.text} <|eot_id|> `;
     }
   }).join(" ") + '\n';
 

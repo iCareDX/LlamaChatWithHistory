@@ -40,6 +40,6 @@ export class Chat extends AgentChat {
     const currentTime = date.toFormat('です。現在の時刻はHH24時MI分です。');
     const wancoSYSPrompt2 = wancoSYSPrompt +' '+ wancoContext +' '+ currentDay + WeekChars[date.getDay()] + currentTime + '今日の日付と現在の時刻を考慮して挨拶や質問に回答してください。午前は、おはようございます、午後は、こんにちは、夕方は、こんばんはと言いましょう。';
 
-    return `<s>[INST]<<SYS>>${wancoSYSPrompt2}<</SYS>>${text}`
+    return `<|begin_of_text|><|start_header_id|>system<|end_header_id|>${wancoSYSPrompt2}<|eot_id|>${text}`
   }
 }
